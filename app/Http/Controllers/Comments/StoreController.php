@@ -10,10 +10,18 @@ use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
+/**
+ * @group Comments
+ */
 class StoreController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Store Comment
+     * 
+     * Create a new comment.
+     */
     public function __invoke(Request $request)
     {
         $validated = $request->validate([

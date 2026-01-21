@@ -8,12 +8,17 @@ use App\Models\Comment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Comments
+ */
 class UpdateController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Handle the incoming request.
+     * Update Comment
+     * 
+     * Update an existing comment.
      */
     public function __invoke(Request $request, $id)
     {

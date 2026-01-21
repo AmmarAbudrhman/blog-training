@@ -8,12 +8,17 @@ use App\Models\Comment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Comments
+ */
 class ShowController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Handle the incoming request.
+     * Show Comment
+     * 
+     * Get details of a specific comment.
      */
     public function __invoke(Comment $comment)
     {

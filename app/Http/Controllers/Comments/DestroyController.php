@@ -7,12 +7,17 @@ use App\Models\Comment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Comments
+ */
 class DestroyController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Handle the incoming request.
+     * Delete Comment
+     * 
+     * Remove a comment from the database.
      */
     public function __invoke(Request $request, $id)
     {

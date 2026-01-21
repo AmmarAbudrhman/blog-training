@@ -9,12 +9,17 @@ use App\Models\Comment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Comments
+ */
 class IndexController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Handle the incoming request.
+     * List Comments
+     * 
+     * Get a paginated list of all comments.
      */
     public function __invoke(Request $request)
     {
