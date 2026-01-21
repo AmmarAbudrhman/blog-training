@@ -9,6 +9,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('/signup', [AuthController::class, 'signup']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/login', [AuthController::class, 'login']);
 
 });
 
