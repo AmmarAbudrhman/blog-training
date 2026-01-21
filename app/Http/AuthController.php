@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -22,7 +21,6 @@ class AuthController extends Controller
 
     public function signup(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -45,7 +43,7 @@ class AuthController extends Controller
             'status' => 'success',
             'message' => 'User created successfully',
             'user' => $user,
-            'authorisation' => [
+            'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
             ]
@@ -63,8 +61,31 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => Auth::guard('api')->user(),
-            'authorisation' => [
-                'token' => JWTAuth::refresh(),
+            'authorization' => [
+                'token' => JWTAuth::parseToken()->refresh(),
+                'type' => 'bearer',
+            ]
+        ]);
+    }
+
+    public function login(Request $request) {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if (! $token = JWTAuth::attempt($validated)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::guard('api')->user(),
+            'authorization' => [
+                'token' => $token,
                 'type' => 'bearer',
             ]
         ]);
