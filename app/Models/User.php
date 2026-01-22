@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Post;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
@@ -24,6 +25,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'avatar',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -44,6 +46,14 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * User posts relationship.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 
 
      /**
