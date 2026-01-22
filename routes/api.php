@@ -35,6 +35,8 @@ Route::prefix('posts')->group(function () {
     Route::post('/', Posts\StoreController::class)->middleware('auth:api');
     Route::put('/{id}', Posts\UpdateController::class)->middleware('auth:api');
     Route::delete('/{id}', Posts\DestroyController::class)->middleware('auth:api');
+});
+
 Route::prefix('comments')->group(function () {
     Route::get('/', Comments\IndexController::class);
     Route::post('/', Comments\StoreController::class);
