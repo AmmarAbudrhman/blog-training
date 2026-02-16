@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\Post;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Laravel\Sanctum\Sanctum;
 
 class PostApiTest extends TestCase
 {
@@ -56,7 +56,7 @@ class PostApiTest extends TestCase
         Storage::fake('public');
 
         $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        Sanctum::actingAs($user);
 
         $data = [
             'title' => 'Test Post',
@@ -64,7 +64,7 @@ class PostApiTest extends TestCase
             'image' => UploadedFile::fake()->image('post.jpg'),
         ];
 
-        $response = $this->postJson('/api/posts', $data, ['Authorization' => 'Bearer ' . $token]);
+        $response = $this->postJson('/api/posts', $data);
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -80,13 +80,13 @@ class PostApiTest extends TestCase
     {
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id' => $user->id]);
-        $token = JWTAuth::fromUser($user);
+        Sanctum::actingAs($user);
 
         $data = [
             'title' => 'Updated Post Title',
         ];
 
-        $response = $this->putJson("/api/posts/{$post->id}", $data, ['Authorization' => 'Bearer ' . $token]);
+        $response = $this->putJson("/api/posts/{$post->id}", $data);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -102,9 +102,9 @@ class PostApiTest extends TestCase
     {
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id' => $user->id]);
-        $token = JWTAuth::fromUser($user);
+        Sanctum::actingAs($user);
 
-        $response = $this->deleteJson("/api/posts/{$post->id}", [], ['Authorization' => 'Bearer ' . $token]);
+        $response = $this->deleteJson("/api/posts/{$post->id}");
 
         $response->assertStatus(200);
 
