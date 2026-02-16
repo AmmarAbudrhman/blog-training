@@ -16,7 +16,7 @@ class UpdateController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if ((Auth::guard('api')->id() ?? Auth::id()) !== $post->user_id) {
+        if ($request->user()->id !== $post->user_id) {
             return $this->errorResponse('Unauthorized', 403);
         }
 
@@ -31,7 +31,6 @@ class UpdateController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            // delete old image if exists
             ImageHelper::delete($post->image);
             $post->image = ImageHelper::upload($request->file('image'), 'posts');
         }

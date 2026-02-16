@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Laravel\Sanctum\Sanctum;
 
 class ProfileApiTest extends TestCase
 {
@@ -16,9 +16,9 @@ class ProfileApiTest extends TestCase
     public function test_can_show_profile()
     {
         $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        Sanctum::actingAs($user);
 
-        $response = $this->getJson('/api/auth/profile', ['Authorization' => 'Bearer ' . $token]);
+        $response = $this->getJson('/api/auth/profile');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -35,14 +35,14 @@ class ProfileApiTest extends TestCase
         Storage::fake('public');
 
         $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        Sanctum::actingAs($user);
 
         $data = [
             'name' => 'Updated Name',
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ];
 
-        $response = $this->putJson('/api/auth/profile', $data, ['Authorization' => 'Bearer ' . $token]);
+        $response = $this->putJson('/api/auth/profile', $data);
 
         $response->assertStatus(200)
             ->assertJson([

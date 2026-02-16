@@ -25,7 +25,7 @@ class StoreController extends Controller
         }
 
         $data = $request->only(['title', 'body']);
-        $data['user_id'] = Auth::guard('api')->id() ?? Auth::id();
+        $data['user_id'] = $request->user()->id;
 
         if ($request->hasFile('image')) {
             $data['image'] = ImageHelper::upload($request->file('image'), 'posts');

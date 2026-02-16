@@ -4,5 +4,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return fn() =>  'Hello, World!';
+    return 'Hello, World!';
 });

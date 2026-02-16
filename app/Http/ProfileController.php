@@ -14,14 +14,14 @@ class ProfileController extends Controller
 {
     public function show(Request $request)
     {
-        $user = Auth::guard('api')->user() ?? Auth::user();
+        $user = $request->user();
 
         return $this->successResponse(new UserResource($user));
     }
 
     public function update(Request $request)
     {
-        $user = Auth::guard('api')->user() ?? Auth::user();
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
