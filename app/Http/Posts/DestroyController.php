@@ -13,7 +13,7 @@ class DestroyController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if ((Auth::guard('api')->id() ?? Auth::id()) !== $post->user_id) {
+        if (request()->user()->id !== $post->user_id) {
             return $this->errorResponse('Unauthorized', 403);
         }
 
